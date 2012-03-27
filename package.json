@@ -1,0 +1,18 @@
+{
+  "name": "triumph",
+  "subdomain": "triumph",
+  "domains": [
+    "triumph.fouadmat.in"
+  ],
+  "version": "0.0.1-7",
+  "dependencies": {
+    "express": "2.5.5",
+    "ejs": ">= 0.0.1",
+    "now": "0.8.1",
+    "cookies": "0.2.1",
+    "mongoose": "2.4.10"
+  },
+  "scripts": {
+    "start": "app.js"
+  }
+}

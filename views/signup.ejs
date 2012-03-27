@@ -1,0 +1,39 @@
+<html class="no-js">
+<head>
+	<title>Signup - TRIUMPH</title>
+	<link rel="stylesheet" type="text/css" href="stylesheets/base.css">
+	<link type="image/png" rel="SHORTCUT ICON" href="images/trophy.png">
+<link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Bitter:700' rel='stylesheet' type='text/css'>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.0.6/modernizr.min.js"></script>
+<script type="text/javascript">
+$(window).load(function(){  
+      $('#wrapper').fadeIn(700); 
+});
+</script>
+</head>
+<body>
+<div id="wrapper">
+	<h1>TRIUMPH</h1>
+	<form id="login-form" method="post" action="/signup">
+		<% if( taken ) {%>
+			<div class="alert-message error" style="margin-left:auto; margin-right:auto; width: 600px;">
+    			<a class="close" href="#">×</a>
+    			<p><strong>Uh oh!</strong> That username is taken.</p>
+  			</div>
+		<% } %>
+		<label for"user[name]">Username:</label>
+		<input type="text" name="user[name]" placeholder="Username"/><br />
+		<label for"user[name]">Email:</label>
+		<input type="text" name="user[email]" placeholder="Email"/><br /
+		<label for"user[pass]">Password: </label>
+    	<input type="password" name="user[pass]" placeholder="Password"/><br /><br />
+    	<input type="submit" class="button green" value="Signup" />
+	</form>
+	<div id="login-ext">
+		<a href="/login">Already a User?</a>
+	</div>
+</div>
+</body>
+</html>
