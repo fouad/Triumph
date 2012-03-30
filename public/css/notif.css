@@ -1,0 +1,100 @@
+/* the norm */
+#notif-notice-wrapper {
+	position:fixed;
+	top:20px;
+	right:20px;
+	width:301px;
+	z-index:9999;
+}
+#notif-notice-wrapper.top-left {
+    left: 20px;
+    right: auto;
+}
+#notif-notice-wrapper.bottom-right {
+    top: auto;
+    left: auto;
+    bottom: 20px;
+    right: 20px;
+}
+#notif-notice-wrapper.bottom-left {
+    top: auto;
+    right: auto;
+    bottom: 20px;
+    left: 20px;
+}
+.notif-item-wrapper {
+	position:relative;
+	margin:0 0 10px 0;
+	background:url('/img/ie-spacer.gif'); /* ie7/8 fix */ 
+}
+.notif-top {
+	background:url(/img/notif.png) no-repeat left -30px;
+	height:10px;
+}
+.hover .notif-top {
+	background-position:right -30px;
+}
+.notif-bottom {
+	background:url(/img/notif.png) no-repeat left bottom;
+	height:8px;
+	margin:0;
+}
+.hover .notif-bottom {
+	background-position: bottom right;
+}
+.notif-item {
+	display:block;
+	background:url(/img/notif.png) no-repeat left -40px;
+	color:#eee;
+	padding:2px 11px 8px 11px;
+	font-size: 11px;
+	font-family:verdana;
+}
+.hover .notif-item {
+	background-position:right -40px;
+}
+.notif-item p {
+	padding:0;
+	margin:0;
+}
+.notif-close {
+	display:none;
+	position:absolute;
+	top:5px;
+	left:3px;
+	background:url(/img/notif.png) no-repeat left top;
+	cursor:pointer;
+	width:30px;
+	height:30px;
+}
+.notif-title {
+	font-size:14px;
+	font-weight:bold;
+	padding:0 0 7px 0;
+	display:block;
+	text-shadow:1px 1px 0 #000; /* Not supported by IE :( */
+}
+.notif-image {
+	width:48px;
+	height:48px;
+	float:left;
+}
+.notif-with-image,
+.notif-without-image {
+	padding:0 0 5px 0;
+}
+.notif-with-image {
+	width:220px;
+	float:right;
+}
+/* for the light (white) version of the notif notice */
+.notif-light .notif-item,
+.notif-light .notif-bottom,
+.notif-light .notif-top,
+.notif-light .notif-close {
+    background-image: url(/img/notif-light.png);
+    color: #222;
+}
+.notif-light .notif-title {
+    text-shadow: none;
+}

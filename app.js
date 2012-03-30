@@ -12,7 +12,7 @@ var app = module.exports = express.createServer();
 
 // Database Setup
 
-mongoose.connect('mongodb://nodejitsu:843901effad4cb5190a2d14ac9e5647e@staff.mongohq.com:10069/nodejitsudb384019315904');
+mongoose.connect('mongodb://nodejitsu:fc36b5d4676f00975398579786e6f768@flame.mongohq.com:27102/nodejitsudb996748635348');
 var Schema = mongoose.Schema
   , ObjectId = Schema.ObjectId
   , Model = mongoose.Model;
@@ -46,6 +46,7 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.cookieParser());
   app.use(express.methodOverride());
+  app.use(express.session({ secret: "lsjdf3emo23j42m3romf2omoi3r0" }));
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
   app.set("view options", { layout : false } );
@@ -64,39 +65,47 @@ app.get('/', routes.index);
 app.get('/index', routes.index);
 // Handle Login Routing
 app.get('/login', function (req, res) {
-	// Check if user logged in, by checking req.cookies.username
-	if(req.cookies.username != null)
+	// Check if user logged in, by checking req.session.username
+	if(req.session.username != null)
 		// If they are, redirect them to the home page
 		res.redirect('/home');
 	else
 		res.render('login', { error : false});
 });
 app.post('/login', function (req, res){
-	var n = req.cookies.username;
+	var n = req.session.username;
 	console.log("username = "+ n);
-	// Check if user logged in, by checking req.cookies.username
-	if(req.cookies.username != null)
+	// Check if user logged in, by checking req.session.username
+	if(req.session.username != null)
 		// If they are, redirect them to the home page
-		res.redirect('/home');
-	// For debugging purposes, log to console progress in the fucntion
-	console.log('login');
-	console.log(req.body.user.name);
-	// Generate a secure password using md5, from the plain text passed from the login form
-	var pass = crypto.createHash('md5').update(req.body.user.pass).digest("hex");
-	console.log(pass);
-	// Check if there are any users with the same username and pass, effectively authenticating the user
-	User.count({username : req.body.user.name, password: pass}, function(err, count){
-		console.log(count);
-		if(count == 1){
-			// If there is a match, create a cookie to keep the user logged in
-			res.cookie('username', req.body.user.name, { expires: new Date(Date.now() + 90000000), httpOnly: true});
-			res.redirect('/home');
-		}
-		else{
-			// If there is no match, return them to the login page, with the error box showing
-			res.render('login', { error : true});
-		}
-	});
+		return res.redirect('/home');
+	else{ 
+		// For debugging purposes, log to console progress in the fucntion
+		console.log('------');
+		console.log('login');
+		console.log('------');
+		console.log(req.body.user.name);
+		// Generate a secure password using md5, from the plain text passed from the login form
+		var pass = crypto.createHash('md5').update(req.body.user.pass).digest("hex");
+		console.log(pass);
+		// Check if there are any users with the same username and pass, effectively authenticating the user
+		User.count({username : req.body.user.name, password: pass}, function(err, count){
+			console.log(count);
+			if(count == 1){
+				// If there is a match, create a cookie to keep the user logged in
+				// res.session('username', req.body.user.name, { expires: new Date(Date.now() + 90000000), httpOnly: true});
+				req.session = {username :  req.body.user.name};
+				console.log(req.session.username)
+				console.log("got this far")
+				res.redirect('/home');
+
+			}
+			else{
+				// If there is no match, return them to the login page, with the error box showing
+				res.render('login', { error : true});
+			}
+		});
+	}
 });
 app.get('/signup', function(req, res){
 	res.render('signup', { taken: false});
@@ -127,7 +136,7 @@ app.post('/signup', function (req, res) {
 			    }
 			});
 			// Create a cookie to keep the user logged in
-			res.cookie('username', req.body.user.name, { expires: new Date(Date.now() + 90000000), httpOnly: true});
+			// re.session('username', req.body.user.name, { expires: new Date(Date.now() + 90000000), httpOnly: true});
 			// Redirect to the home page
 			res.redirect('/home');
 		}
@@ -138,17 +147,20 @@ app.post('/signup', function (req, res) {
 	});
 });
 app.get('/home', function (req, res){
-	if(req.cookies.username == null)
-		res.redirect('/login');
+	console.log("im in home")
+	console.log(req.session.username);
+	if(req.session.username == null)
+		return res.redirect('/login');
 	// Render the home page which has all of the menu items
-	res.render('home');
+	else
+		res.render('home');
 });
 app.get('/logout', function (req, res){
 	// Logs the user out by clearing their cookie and redirecting them to the login page
-	if(req.cookies.username == null)
+	if(req.session.username == null)
 		res.redirect('/login');
 	else{
-		res.clearCookie('username');
+		// res.clearCookie('username');
 		res.redirect('/login');
 	}
 });
@@ -156,12 +168,17 @@ app.get('/users', function (req, res) {
 	// Send anyone who isn't logged in, straight to the login page
 	// Redirection from login page should be implemented later
 	// just use ?to=/users/id/whatever
-	if(req.cookies.username == null)
+	if(req.session.username == null)
 		res.redirect('/login');
 	User.find({}, function(err, users){
   		res.render('users', { users: users});
   	});
 });
+
+var loggedIn = function(){
+	if(req.session.username == null)
+		res.redirect('/login');
+}
 
 // Starts the server
 app.listen(3000);

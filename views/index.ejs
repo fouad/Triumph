@@ -1,25 +1,20 @@
 <html class="no-js">
 <head>
 <title>Play Triumph</title>
-<link rel="stylesheet" type="text/css" href="stylesheets/base.css">
 <link type="image/png" rel="SHORTCUT ICON" href="images/trophy.png">
 <link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Bitter:700' rel='stylesheet' type='text/css'>
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.0.6/modernizr.min.js"></script>
-<script type="text/javascript">
-$(window).load(function(){  
-      $('#wrapper').fadeIn(700); 
-});
-</script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script type="text/javascript" src="/js/notif.js"></script>
+<link rel="stylesheet" type="text/css" href="/css/notif.css">
+<link rel="stylesheet" type="text/css" href="/css/style.css">
+<script type="text/javascript" src="/js/map.js"></script>
 </head>
 <body class="load">
 <div id="wrapper">
-	<h1>TRIUMPH</h1>
-	<div id="index-about">
-	 TRIUMPH is a multiplayer online war game intended to provide an exciting alternative to many other belligerent games while teaching the player the basics and art of war. The player will make an account through our website, where they will be able to compete with other members. TRIUMPH derives many elements from the board game <em>Risk&copy;</em>, but enhances the user experience through an innovative and intuitive interface. The game also uses multiple locations from around the world as unique backdrops for multiple battles. Each war will tell a unique story, from a post-apocalyptic New York City to a war torn Afghanistan. <br /><br />
-	 	<a class="button red" href="/login">Play</a>
-	 </div>
+	<div id="canvas_container" style="margin-left:auto;margin-right:auto;width:800px;height:600px;"></div>
 </div>
 </body>
 </html>
