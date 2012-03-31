@@ -70,6 +70,45 @@ app.get('/home', function (req,res){
         return res.redirect('/login');
     res.render('home')
 });
+app.get('/signup', function(req, res){
+    res.render('signup', { taken: false});
+});
+app.post('/signup', function (req, res) {
+    console.log('signup');
+    // Generate a secure password using md5, from the plain text passed from the signup form
+    var pass = crypto.createHash('md5').update(req.body.user.pass).digest("hex");
+    // Again for debugging purposes, just to make sure that the function isn't creating two objects with the same username
+    console.log(pass);
+    console.log(User.count({username : req.body.user.name}, function(err, count){
+        return count;
+    }));
+    // Make sure no other documents in the database have the same username
+    User.count({username : req.body.user.name}, function(err, count){
+        console.log(count);
+        if(count == 0){
+            // If there are no others, then create the user with the username && md5(password)
+            var user = new User({username: req.body.user.name, password: pass, email: req.body.user.email });
+            user.save(function(err, user_Saved){
+                if(err){
+                    // In case the database disconnects, or fails silently - throw an error
+                    throw err;
+                    console.log(err);
+                }else{
+                    // For Debugging purposes, let debugger know it succesfully saved
+                    console.log('saved!');
+                }
+            });
+            // Create a cookie to keep the user logged in
+            // re.session('username', req.body.user.name, { expires: new Date(Date.now() + 90000000), httpOnly: true});
+            // Redirect to the home page
+            res.redirect('/home');
+        }
+        else{
+            //If there is already a user with that username in the system, render the signup page again and enable the taken div
+            res.render('signup', { taken : true});
+        }
+    });
+});
 app.get('/login', function (req, res) {
     // Check if user logged in, by checking req.session.username
     if(req.session.username != null)
@@ -122,6 +161,8 @@ app.post('/games/new', function (req,res){
     if(req.session.username == null)
         return res.redirect('/login');
     // if(req.body.form.)
+    console.log("users: ",req.body.game.users)
+    console.log("map: ",req.body.game.map)
 });
 app.get('/games/:id',function (req, res){
     if(req.session.username == null)
@@ -136,10 +177,10 @@ app.get('/games/:id',function (req, res){
     });
 
 });
-app.get('*', function (req, res){
-    res.render('error')
-});
-app.error(function (err, req, res, next){
+// app.get('*', function (req, res){
+//     res.render('error')
+// });
+app.error(function (err, req, res){
     res.render('error')
 });
 // parses NYC game

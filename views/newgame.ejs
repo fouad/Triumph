@@ -16,18 +16,19 @@ $(window).load(function(){
 <body>
 <div id="wrapper">
     <h1>TRIUMPH</h1>
-    <form id="login-form" method="post" action="/login">
+    <form id="login-form" method="post" action="/games/new">
         <% if( error ) {%>
             <div class="alert-message error" style="margin-left:auto; margin-right:auto; width: 600px;">
                 <a class="close" href="#">×</a>
                 <p><strong>Uh oh!</strong> Looks like you entered some info incorrectly, how about you try again?</p>
             </div>
         <% } %>
-        <label for"user[name]">Username:</label>
-        <input type="text" name="user[name]" placeholder="Username"/><br />
-        <label for"user[pass]">Password: </label>
-        <input type="password" name="user[pass]" placeholder="Password"/><br /><br />
-        <input type="submit" class="button blue" value="Login" />
+        <label for"game[users]">Who are you playing with? (maximum of 3 other people, separated by comma)</label>
+        <input type="text" name="game[users]" placeholder="Usernames"/><br />
+        <select name="game[map]">
+            <option name="game[map]" value="nyc" selected>New York City</option>
+        </select><br /><br />
+        <input type="submit" class="button blue" value="Start!" />
     </form>
     <div id="login-ext">
         <a href="/forgot">Forgot your password?</a><br />
