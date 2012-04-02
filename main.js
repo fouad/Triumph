@@ -1,3 +1,22 @@
+// Triumph - Risk-esque game in node.js
+// Authors: Fouad Matin (Lead), Samer Masterson, Max Knutsen
+// Copyright © 2012 Fouad Matin
+// TABLE OF CONTENTS
+// -----------------
+// Database - DB01
+// Config - C01
+// Home - H01
+// ------- USER MANAGEMENT - U00
+// Signup - U01
+// Login - U02
+// ------- GAMES - G00
+// New Game - G01
+// Play Game - G02
+// 
+// FUNCTIONS - F00
+// ---------------
+// Parse map data - MD01
+
 var express = require('express') // imports express
   , routes = require('./routes') // imports routes
   , mongoose = require('mongoose') // imports mongoose
@@ -5,6 +24,7 @@ var express = require('express') // imports express
 
 var app = module.exports = express.createServer();
 
+// DATABASE - DB01
 mongoose.connect('mongodb://nodejitsu:fc36b5d4676f00975398579786e6f768@flame.mongohq.com:27102/nodejitsudb996748635348');
 var Schema = mongoose.Schema
   , ObjectId = Schema.ObjectId
@@ -30,7 +50,7 @@ var GameSchema = new Schema({
 
 var User = mongoose.model('User', UserSchema);
 var Game = mongoose.model('Game', GameSchema);
-// Check to make sure MongoDB is conencted
+// Check to make sure MongoDB is connected
 // Display number of records currently in the database
 mongoose.connection.on("open", function(){
   console.log("Mongoose connected");
@@ -41,7 +61,7 @@ mongoose.connection.on("open", function(){
     console.log( "Users:", users);
   });
 });
-
+// CONFIG - C01
 // Express Configuration
 app.configure(function(){
   app.set('views', __dirname + '/views');
@@ -70,6 +90,8 @@ app.get('/home', function (req,res){
         return res.redirect('/login');
     res.render('home')
 });
+// USER MANAGEMENT - U00
+// SIGNUP - S01
 app.get('/signup', function(req, res){
     res.render('signup', { taken: false});
 });
@@ -109,6 +131,7 @@ app.post('/signup', function (req, res) {
         }
     });
 });
+// LOGIN - U02
 app.get('/login', function (req, res) {
     // Check if user logged in, by checking req.session.username
     if(req.session.username != null)
@@ -149,9 +172,11 @@ app.post('/login', function (req, res){
         });
     }
 });
+// GAMES - G00
 app.get('/games', function (req,res){
     return res.redirect('/home');
-})
+});
+// NEW GAME - G01
 app.get('/games/new', function (req, res){
     if(req.session.username == null)
         return res.redirect('/login');
@@ -160,10 +185,14 @@ app.get('/games/new', function (req, res){
 app.post('/games/new', function (req,res){
     if(req.session.username == null)
         return res.redirect('/login');
-    // if(req.body.form.)
+    if(req.body.form.users == null){
+        return res.render('newgame', {error: "Do you not have any friends? C'mon, play with somebody."});
+    }
     console.log("users: ",req.body.game.users)
     console.log("map: ",req.body.game.map)
+    res.redirect('/login')
 });
+// PLAY GAME - G02
 app.get('/games/:id',function (req, res){
     if(req.session.username == null)
         return res.redirect('/login');
@@ -177,13 +206,11 @@ app.get('/games/:id',function (req, res){
     });
 
 });
-// app.get('*', function (req, res){
-//     res.render('error')
-// });
 app.error(function (err, req, res){
     res.render('error')
 });
-// parses NYC game
+// FUNCTIONS - F00
+// Parse Map Data - MD01
 var parseMD = function (s) {
   var array = s.split(" ")
   var map = {}
