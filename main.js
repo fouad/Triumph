@@ -217,26 +217,31 @@ var parseMD = function (s) {
     var array = s.split(" ")
     var map = {}
     map.map = array[0]
+    map.regions = []
     if (map.map == "nyc"){
-	var region;
-	var phase = 0;
-	var tempjson = {};
-	for (var i = 1; i < array.length; i++) {
-	    if (phase == 0) {
-		region = parseInt(array[i]);
-		phase++;
-	    } else if (phase == 1) {
-		tempjson.player = parseInt(array[i]);
-		phase++;
-            } else if(phase == 2) {
-		tempjson.troops = array[i];
-		map.regions[region] = tempjson;
-		phase = 0;
+        var tempjson = {};
+        var region = 0;
+        for (var i = 1; i < array.length; i++) {
+            console.log("-------")
+            console.log(array[i])
+            switch (i%2){
+                case 1:
+                  map.regions[region] = {};
+                  map.regions[region].player = array[i];
+                  break;
+                case 0:
+                  map.regions[region].troops = array[i];
+                  region++;
+                  break;
+                default: 
+                  console.log("uh oh")
+                  break;
             }
-	}
+            console.log("-------")
+        }
     } else {
-	console.log('unrecognized map format')
+        console.log('unrecognized map format')
     }
-    return map
+    return map;
 }
 app.listen(5000);
