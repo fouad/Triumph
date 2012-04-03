@@ -226,7 +226,7 @@ var parseMD = function (s) {
 		region = parseInt(array[i]);
 		phase++;
 	    } else if (phase == 1) {
-		tempjson.player = array[i];
+		tempjson.player = parseInt(array[i]);
 		phase++;
             } else if(phase == 2) {
 		tempjson.troops = array[i];
