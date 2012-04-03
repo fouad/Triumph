@@ -214,25 +214,29 @@ app.error(function (err, req, res){
 // FUNCTIONS - F00
 // Parse Map Data - MD01
 var parseMD = function (s) {
-  var array = s.split(" ")
-  var map = {}
-  map.map = array[0]
-  if (map.map == "nyc"){
-    var phase = 0;
-    var tempjson = {};
-    for (var i = 1; i < array.length; i++) {
-        if (phase == 0) {
-          tempjson.player = array[i];
-          phase++;
-        } else if( phase == 1) {
-          tempjson.troops = array[i];
-          map.regions[i - 1 - phase] = tempjson;
-          phase = 0;
-        }
+    var array = s.split(" ")
+    var map = {}
+    map.map = array[0]
+    if (map.map == "nyc"){
+	var region;
+	var phase = 0;
+	var tempjson = {};
+	for (var i = 1; i < array.length; i++) {
+	    if (phase == 0) {
+		region = parseInt(array[i]);
+		phase++;
+	    } else if (phase == 1) {
+		tempjson.player = array[i];
+		phase++;
+            } else if(phase == 2) {
+		tempjson.troops = array[i];
+		map.regions[region] = tempjson;
+		phase = 0;
+            }
+	}
+    } else {
+	console.log('unrecognized map format')
     }
-  } else {
-    console.log('unrecognized map format')
-  }
-  return map
+    return map
 }
 app.listen(5000);
