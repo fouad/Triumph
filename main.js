@@ -21,6 +21,7 @@ var express = require('express') // imports express
   , routes = require('./routes') // imports routes
   , mongoose = require('mongoose') // imports mongoose
   , crypto =  require('crypto') // imports crypto
+  , __ = require('underscore')
 
 var app = module.exports = express.createServer();
 
@@ -63,6 +64,7 @@ mongoose.connection.on("open", function(){
 });
 // CONFIG - C01
 // Express Configuration
+var notNames = ["null"]
 app.configure(function(){
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
@@ -185,7 +187,7 @@ app.get('/games/new', function (req, res){
 app.post('/games/new', function (req,res){
     if(req.session.username == null)
         return res.redirect('/login');
-    if(req.body.form.users == null){
+    if(req.body.game.users == ""){
         return res.render('newgame', {error: "Do you not have any friends? C'mon, play with somebody."});
     }
     console.log("users: ",req.body.game.users)
