@@ -23,7 +23,7 @@ var express = require('express') // imports express
   , __ = require('underscore')
 
 var app = module.exports = express.createServer();
-
+var userNames = [];
 // DATABASE - DB01
 mongoose.connect('mongodb://nodejitsu:fc36b5d4676f00975398579786e6f768@flame.mongohq.com:27102/nodejitsudb996748635348');
 var Schema = mongoose.Schema
@@ -59,6 +59,9 @@ mongoose.connection.on("open", function(){
   });
   User.find({}, function(err, users){
     console.log( "Users:", users);
+    __.each(users, function(user, callback){
+      userNames.push(user.username);
+    });
   });
 });
 // CONFIG - C01
@@ -93,8 +96,6 @@ app.get('/home', function (req,res){
 });
 // USER MANAGEMENT - U00
 // SIGNUP - S01
-var users = [];
-
 
 app.get('/signup', function(req, res){
     res.render('signup', { taken: false});
@@ -186,13 +187,13 @@ app.get('/games', function (req,res){
 app.get('/games/new', function (req, res){
     if(req.session.username == null)
         return res.redirect('/login');
-    res.render('newgame', {error: false});
+    res.render('newgame', {error: false, users: userNames});
 });
 app.post('/games/new', function (req,res){
     if(req.session.username == null)
         return res.redirect('/login');
     if(req.body.game.users == ""){
-        return res.render('newgame', {error: "Do you not have any friends? C'mon, play with somebody."});
+        return res.render('newgame', {error: "Do you not have any friends? C'mon, play with somebody.", users: userNames});
     }
     console.log("users: ",req.body.game.users)
     console.log("map: ",req.body.game.map)
