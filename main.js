@@ -15,7 +15,6 @@
 // 
 // FUNCTIONS - F00
 // ---------------
-// Parse map data - MD01
 
 var express = require('express') // imports express
   , routes = require('./routes') // imports routes
@@ -94,6 +93,9 @@ app.get('/home', function (req,res){
 });
 // USER MANAGEMENT - U00
 // SIGNUP - S01
+var users = [];
+
+
 app.get('/signup', function(req, res){
     res.render('signup', { taken: false});
 });
@@ -121,7 +123,9 @@ app.post('/signup', function (req, res) {
                     // For Debugging purposes, let debugger know it succesfully saved
                     console.log('saved!');
                 }
+
             });
+            users.push(req.body.user.name);
             // Create a cookie to keep the user logged in
             // re.session('username', req.body.user.name, { expires: new Date(Date.now() + 90000000), httpOnly: true});
             // Redirect to the home page
@@ -212,36 +216,5 @@ app.error(function (err, req, res){
     res.render('error')
 });
 // FUNCTIONS - F00
-// Parse Map Data - MD01
-var parseMD = function (s) {
-    var array = s.split(" ")
-    var map = {}
-    map.map = array[0]
-    map.regions = []
-    if (map.map == "nyc"){
-        var tempjson = {};
-        var region = 0;
-        for (var i = 1; i < array.length; i++) {
-            console.log("-------")
-            console.log(array[i])
-            switch (i%2){
-                case 1:
-                  map.regions[region] = {};
-                  map.regions[region].player = array[i];
-                  break;
-                case 0:
-                  map.regions[region].troops = array[i];
-                  region++;
-                  break;
-                default: 
-                  console.log("uh oh")
-                  break;
-            }
-            console.log("-------")
-        }
-    } else {
-        console.log('unrecognized map format')
-    }
-    return map;
-}
+
 app.listen(5000);
