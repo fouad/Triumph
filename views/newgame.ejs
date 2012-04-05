@@ -33,7 +33,7 @@ $(window).load(function(){
             <span class="icon-bar"></span>
           </a>
           <a class="brand" href="#">TRIUMPH</a>
-          <div class="nav-collapse">
+          <div class="nav-collapse pull-right">
             <ul class="nav">
               <li class="active"><a href="#">Home</a></li>
               <li><a href="#about">About</a></li>
@@ -52,14 +52,14 @@ $(window).load(function(){
             <% if( error ) {%>
                 <div class="alert alert-error" style="margin-left:auto; margin-right:auto; width: 400px;">
                     <a class="close" href="#">×</a>
-                    <p>Do you not have any friends? C'mon, play with somebody.</p>
+                    <p><%= error %></p>
                 </div>
             <% } %>
-            <label for"game[users]"><h4>Who are you playing with? (maximum of 3 other people, separated by comma)</h3></label>
+            <label for"game[users]"><h4>Who are you playing with? (maximum of 3 other people)</h3></label>
             <!-- <input type="text" name="game[users]" placeholder="Usernames"/> -->
-            <select class="chosen" multiple="true" style="width:400px;">
+            <select class="chosen" multiple="true" style="width:400px;" name="game[users]">
                 <% for(var i=0; i<users.length; i++) {%>
-                   <option><%= users[i] %></option>
+                   <option value="<%= users[i] %>"><%= users[i] %></option>
                 <% } %>
             </select>
             <br />

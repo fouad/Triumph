@@ -43,11 +43,17 @@ var UserSchema = new Schema({
 var GameSchema = new Schema({
   id: Number,
   players: {type: [UserSchema]}, 
+  freeTroops: [Number],
   map: {type: String, default: "nyc"},
   turn: {type:Number,default: 0},
   data: String
 });
-
+// Default Map Data
+var blankMaps = {};
+blankMaps["nyc"] = {
+    name: "nyc",
+    regions: [{strat: 0}]
+}
 var User = mongoose.model('User', UserSchema);
 var Game = mongoose.model('Game', GameSchema);
 // Check to make sure MongoDB is connected
@@ -59,7 +65,7 @@ mongoose.connection.on("open", function(){
   });
   User.find({}, function(err, users){
     console.log( "Users:", users);
-    __.each(users, function(user, callback){
+    __.each(users, function(user){
       userNames.push(user.username);
     });
   });
@@ -126,7 +132,8 @@ app.post('/signup', function (req, res) {
                 }
 
             });
-            users.push(req.body.user.name);
+            userNames.push(req.body.user.name);
+            req.session.username =req.body.user.name;
             // Create a cookie to keep the user logged in
             // re.session('username', req.body.user.name, { expires: new Date(Date.now() + 90000000), httpOnly: true});
             // Redirect to the home page
@@ -187,14 +194,45 @@ app.get('/games', function (req,res){
 app.get('/games/new', function (req, res){
     if(req.session.username == null)
         return res.redirect('/login');
-    res.render('newgame', {error: false, users: userNames});
+    var su = req.session.username;
+    res.render('newgame', {error: false, users: __.reject(userNames, function(ur){ return ur == su})});
 });
 app.post('/games/new', function (req,res){
     if(req.session.username == null)
         return res.redirect('/login');
-    if(req.body.game.users == ""){
+    if(typeof req.body.game.users == 'undefined'){
         return res.render('newgame', {error: "Do you not have any friends? C'mon, play with somebody.", users: userNames});
     }
+    if(req.body.game.users.length > 3){
+        return res.render('newgame', {error: "Woah there! You have too many friends, you can only play with three.", users: userNames});   
+    }
+    var pl = [req.session.username];
+    pl = pl.concat(req.body.game.users);
+    var us = _.map(pl, function(un){
+        User.findOne({username:un}, function(err, user){
+            return user;
+        });
+    });
+    var numPlayers = pl.length;
+    var freeT = [];
+    var mapName = req.body.game.map;
+    var tRegions = [];
+    for(var ii = 0; i < numPlayers; i++){
+        freeT.push(50);
+    }
+    if(mapName == "nyc"){
+        for(var l = 0; l < 17; l++){
+
+        }
+    } else {
+        console.log("oh damn")
+        return res.render("/games/23923423")
+    }
+    var g = new Game({id: 3, players: us, });
+
+
+
+
     console.log("users: ",req.body.game.users)
     console.log("map: ",req.body.game.map)
     res.redirect('/login')
