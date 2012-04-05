@@ -1,3 +1,4 @@
+
 <html class="no-js">
 <head>
     <title>New Game - TRIUMPH</title>
@@ -7,6 +8,12 @@
 <link href='http://fonts.googleapis.com/css?family=Bitter:700' rel='stylesheet' type='text/css'>
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.0.6/modernizr.min.js"></script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.3.1/underscore-min.js"></script>
+<script type="application/javascript" src="/js/notif.js"></script>
+<link rel="stylesheet" type="text/css" href="/css/notif.css">
+<link rel="stylesheet" type="text/css" href="/css/style.css">
+<script type="text/javascript" src="/js/map.js"></script>
 <script type="text/javascript" src="/js/chosen.jquery.min.js"></script>
 <link rel="stylesheet" type="text/css" href="/css/chosen.css">
 <script type="text/javascript"> jQuery(document).ready(function(){
@@ -20,6 +27,7 @@
 <script type="text/javascript">
 $(window).load(function(){  
       $('#container').fadeIn(700); 
+      var game = <%= game %>;
 });
 </script>
 </head>
@@ -34,8 +42,8 @@ $(window).load(function(){
           </a>
           <a class="brand" href="#">TRIUMPH</a>
           <div class="nav-collapse">
-            <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
+            <ul class="nav pull-right">
+              <li class="active"><a href="/">Home</a></li>
               <li><a href="/about">About</a></li>
               <li class="dropdown" id="menu1">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#menu1">
@@ -43,15 +51,13 @@ $(window).load(function(){
                   <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a href="/games/new">New Game</a></li>
-                  <li><a href="/games/">Current</a></li>
-                  <li><a href="/games/past">History</a></li>
+                  <li><a href="#">Action</a></li>
+                  <li><a href="#">Another action</a></li>
+                  <li><a href="#">Something else here</a></li>
+                  <li class="divider"></li>
+                  <li><a href="#">Separated link</a></li>
                 </ul>
               </li>
-            </ul>
-            <ul class="nav pull-right">
-                <li class="faux-link">Welcome back, <%= session.username %>!</li>
-                <li><a href="/logout">Logout</a></li>
             </ul>
           </div><!--/.nav-collapse -->
           
@@ -60,29 +66,9 @@ $(window).load(function(){
       <div id="nav-colors"></div>   
     </div>
     <div class="container">
-        <h1>Start a New Game</h1>
-        <form id="login-form" method="post" action="/games/new" style="text-align:center;" class="clearfix">
-            <br>
-            <% if( error ) {%>
-                <div class="alert alert-error" style="margin-left:auto; margin-right:auto; width: 400px;">
-                    <a class="close" href="#">×</a>
-                    <p><%= error %></p>
-                </div>
-            <% } %>
-            <label for"game[users]"><h4>Who are you playing with? (maximum of 3 other people)</h3></label>
-            <!-- <input type="text" name="game[users]" placeholder="Usernames"/> -->
-            <select class="chosen" multiple="true" style="width:400px;" name="game[users]">
-                <% for(var i=0; i<users.length; i++) {%>
-                   <option value="<%= users[i] %>"><%= users[i] %></option>
-                <% } %>
-            </select>
-            <br />
-            <label for"game[map]"><h4>Which map are you playing on?</h3></label>
-            <select name="game[map]">
-                <option name="game[map]" value="nyc" selected>New York City</option>
-            </select><br /><br />
-            <input type="submit" class="btn btn-large btn-danger" style="text-align:center;" value="Start!" />
-        </form> 
+        <div id="wrapper">
+            <div id="canvas_container" style="margin-left:auto;margin-right:auto;width:800px;height:600px;"></div>
+        </div>
     </div>
     <script type="text/javascript" src="http://twitter.github.com/bootstrap/assets/js/bootstrap-dropdown.js"></script>
     <script type="text/javascript">

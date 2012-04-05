@@ -1,39 +1,74 @@
 <html class="no-js">
 <head>
-	<title>Signup - TRIUMPH</title>
-	<link rel="stylesheet" type="text/css" href="stylesheets/base.css">
-	<link type="image/png" rel="SHORTCUT ICON" href="images/trophy.png">
+    <title>Signup - TRIUMPH</title>
+    <link rel="stylesheet" type="text/css" href="/css/base.css">
+    <link type="image/png" rel="SHORTCUT ICON" href="/images/trophy.png">
 <link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Bitter:700' rel='stylesheet' type='text/css'>
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.0.6/modernizr.min.js"></script>
+<style type="text/css">
+    body{
+        padding-top: 60px;
+    }
+</style>
 <script type="text/javascript">
 $(window).load(function(){  
-      $('#wrapper').fadeIn(700); 
+      $('#container').fadeIn(700); 
 });
 </script>
 </head>
 <body>
-<div id="wrapper">
-	<h1>TRIUMPH</h1>
-	<form id="login-form" method="post" action="/signup">
-		<% if( taken ) {%>
-			<div class="alert-message error" style="margin-left:auto; margin-right:auto; width: 600px;">
-    			<a class="close" href="#">×</a>
-    			<p><strong>Uh oh!</strong> That username is taken.</p>
-  			</div>
-		<% } %>
-		<label for"user[name]">Username:</label>
-		<input type="text" name="user[name]" placeholder="Username"/><br />
-		<label for"user[name]">Email:</label>
-		<input type="text" name="user[email]" placeholder="Email"/><br /
-		<label for"user[pass]">Password: </label>
-    	<input type="password" name="user[pass]" placeholder="Password"/><br /><br />
-    	<input type="submit" class="button green" value="Signup" />
-	</form>
-	<div id="login-ext">
-		<a href="/login">Already a User?</a>
-	</div>
-</div>
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#">TRIUMPH</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li><a href="#">Home</a></li>
+              <li><a href="/about">About</a></li>
+            </ul>
+            <ul class="nav pull-right">
+                <li class="active"><a href="/signup">Signup</a></li>
+                <li><a href="/login">Login</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+          
+        </div>
+      </div>
+      <div id="nav-colors"></div>   
+    </div>
+    <div class="container">
+        <h1>Signup</h1>
+        <form id="login-form" method="post" action="/signup" style="text-align:center;" class="clearfix">
+            <br>
+            <% if( taken ) {%>
+                <div class="alert-message error" style="margin-left:auto; margin-right:auto; width: 600px;">
+                    <a class="close" href="#">×</a>
+                    <p><strong>Uh oh!</strong> That username is taken.</p>
+                </div>
+            <% } %>
+            <label for"user[name]"><h3>Username:</h3></label>
+            <input type="text" name="user[name]" placeholder="Username"/><br />
+            <label for"user[name]"><h3>Email:</h3></label>
+            <input type="text" name="user[email]" placeholder="Email"/><br /
+            <label for"user[pass]"><h3>Password:</h3> </label>
+            <input type="password" name="user[pass]" placeholder="Password"/><br /><br />
+            <input type="submit" class="btn btn-large btn-primary" value="Signup" />
+            <div id="login-ext">
+                <p><br><a href="/signup">Don't have an account?</a></p>
+            </div>
+        </form> 
+    </div>
+    <script type="text/javascript" src="http://twitter.github.com/bootstrap/assets/js/bootstrap-dropdown.js"></script>
+    <script type="text/javascript">
+    $('.dropdown-toggle').dropdown()
+    </script>
+</body>
 </body>
 </html>

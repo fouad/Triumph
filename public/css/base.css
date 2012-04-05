@@ -700,3 +700,14 @@ a.brand{
     height:3px;
     background: url(/img/a.png) repeat-x scroll 0 0;
 }
+.faux-link {
+    float: none;
+    padding: 10px 10px 11px;
+    line-height: 19px;
+    color: #999;
+    text-decoration: none;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+#login-form input[type=text], #login-form input[type=password]{
+    height:25px;
+}
