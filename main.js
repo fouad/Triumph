@@ -229,6 +229,7 @@ app.post('/games/new', function (req,res){
             });
         });
     }
+    us();
     var numPlayers = pl.length;
     var freeT = [];
     var mapName = req.body.game.map;
@@ -283,6 +284,7 @@ app.post('/games/new', function (req,res){
                             uz.save();
                         });
                         console.log(rand);
+                        console.log(sRegions);
                         console.log("game saved!");
                         return res.redirect('/games/'+rand);
                     }
@@ -298,6 +300,7 @@ app.get('/games/:id',function (req, res){
         return res.redirect('/login');
     Game.findOne({id:req.params.id}, function (err, ga){ 
         if(err){ return res.render('error');}
+        console.log(ga.regions);
         return res.render('map', {game: ga });
     });
 

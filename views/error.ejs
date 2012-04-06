@@ -1,8 +1,9 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <title>Uh oh! Page not found.</title>
+        <title>Uh oh! Error.</title>
         <meta charset="utf-8">
+        <link type="image/png" rel="SHORTCUT ICON" href="/img/trophy.png">
         <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
         <style>
             body {
@@ -21,7 +22,7 @@
         </style>
     </head>
     <body>
-        <div id="a">Sorry, that page doesn't exist!<br>You can go to the <a href="/home">dashboard</a>, or wait until Nyan Cat finds it (it might take a while).</div>
+        <div id="a">Uh oh! Something went wrong.<br>You can go to the <a href="/home">dashboard</a>, while Nyan Cat gets help (it might take a while).</div>
 
         <script src="http://dl.dropbox.com/u/6213850/WebGL/js/Three.js"></script>
         <script src="http://dl.dropbox.com/u/6213850/WebGL/js/Detector.js"></script>
@@ -37,7 +38,7 @@
             var windowHalfX = window.innerWidth / 2;
             var windowHalfY = window.innerHeight / 2;
             var clock = new THREE.Clock(), deltaSum=0, tick=0, frame=0, running=true;
-            var song = document.createElement('audio'), song2 = document.createElement('audio');
+            // var song = document.createElement('audio'), song2 = document.createElement('audio');
             document.addEventListener( 'mousemove', onDocumentMouseMove, false );
             document.addEventListener( 'mousedown', onDocumentMouseDown, false );
 
@@ -53,11 +54,6 @@
                 o.add( mesh );
             }
             function init() {
-                song.setAttribute('src', 'nyanlooped.mp3');
-                song.setAttribute('loop', 'true');
-                song2.setAttribute('src', 'nyanslow.mp3');
-                song2.setAttribute('loop', 'true');
-                song.play();
                 container = document.createElement( 'div' );
                 document.body.appendChild( container );
 
@@ -279,11 +275,11 @@
             function onDocumentMouseDown(event) {
                 running=!running;
                 if(running){
-                    song.play();
-                    song2.pause();
+                    // song.play();
+                    // song2.pause();
                 }else{
-                    song.pause();
-                    song2.play();
+                    // song.pause();
+                    // song2.play();
                 }
             }
             function animate() {
