@@ -46,10 +46,10 @@ $(window).load(function(){
         boroughs[i].attr({fill:'#bcbcbc', "stroke-width":2});
         boroughs[i].transform( 'S0.6,0.5,0,0');
         boroughs[i].node.id = "region"+i;
-        if(i != boroughs.length - 1){
-            boroughs[i].mouseover(function(){this.node.style.cursor='pointer'; this.animate({fill:'white'}, 300, "linear")});
-            boroughs[i].mouseout(function(){this.animate({fill:'#bcbcbc'}, 300, "linear")});
-        }
+        // if(i != boroughs.length - 1){
+            // boroughs[i].mouseover(function(){this.node.style.cursor='pointer'; this.animate({fill:'white'}, 3000, "linear")});
+            // boroughs[i].mouseout(function(){this.animate({fill:'#bcbcbc'}, 300, "linear")});
+        // }
     }
     boroughs[15].attr({fill:'#eee'});
     console.log(boroughs);

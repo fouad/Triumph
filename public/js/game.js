@@ -9,13 +9,17 @@ function Game(gid, players, map, turn, regions, pRegions){
     // _.each(this.pRegions, function(re){ console.log("#"+re); return ("#"+re); }); /* the path of the regions */
     console.log(this.pRegions);
     // console.log($(this.pRegions[0]).attr({fill:'#ff0000'}));
-    $(this.pRegions[0]).attr({fill:self.getRegionColor(self.regions[0].player,self.regions[0].troops)});
     // $(this.pRegions[0]).mouseout({fill:self.getRegionColor(self.regions[0].player,self.regions[0].troops)});
 }
 Game.prototype.colorRegions = function(){
     for(var il = 0; il < this.regions.length; il++){
         console.log("------");
         console.log($(this.pRegions[il]));
+        var pRegion = 6;
+        var region = this.regions[il];
+        var self = this;
+        var col = self.getRegionColor(region.player,region.troops);
+        $(this.pRegions[il]).attr({fill:col}).mouseenter(function(){ $(this).attr({fill:'#FFF'}); }).mouseleave(function(){ $(this).attr({fill:col}); });
         console.log("------");
         // console.log($(this.pRegions[il]).attr({fill:this.getRegionColor(this.regions[il].player,this.regions[il].troops)}));
     }
