@@ -305,6 +305,12 @@ app.get('/games/:id',function (req, res){
     });
 
 });
+app.get('/nyan', function (req, res){
+    return res.render('error');
+});
+app.get('/mu-0e36082c-12fbbfb6-41f76021-6ee9b732', function (req,res){
+    return '42'
+});
 app.error(function (err, req, res){
     res.render('error')
 });
