@@ -21,11 +21,12 @@ var express = require('express') // imports express
   , mongoose = require('mongoose') // imports mongoose
   , crypto =  require('crypto') // imports crypto
   , __ = require('underscore')
+  , _ = require('nimble')
 
 var app = module.exports = express.createServer();
 var userNames = [];
 // DATABASE - DB01
-mongoose.connect('mongodb://nodejitsu:28f146e4fb9eff81dc04a3c535913fdf@staff.mongohq.com:10033/nodejitsudb919199975337');
+mongoose.connect('mongodb://nodejitsu:b98d23868c52a099003c1546fa4bee90@staff.mongohq.com:10021/nodejitsudb94950299470');
 var Schema = mongoose.Schema
   , ObjectId = Schema.ObjectId
   , Model = mongoose.Model;
@@ -42,11 +43,12 @@ var UserSchema = new Schema({
 });
 var GameSchema = new Schema({
   id: Number,
-  players: {type: [UserSchema]}, 
+  players: [String], 
   freeTroops: [Number],
   map: {type: String, default: "nyc"},
   turn: {type:Number,default: 0},
-  regions: [String]
+  regions: [String],
+  gameStarted: {type: Number, default:0}
 });
 var User = mongoose.model('User', UserSchema);
 var Game = mongoose.model('Game', GameSchema);
@@ -96,12 +98,18 @@ app.configure('production', function(){
   app.use(express.errorHandler()); 
 });
 app.get('/', function (req,res){
-  res.render('index');
+    if(req.session.username == null) 
+        return res.render('index');
+    User.findOne({username:req.session.username}, function (err, user){
+        return res.render('home', { activeGames: user.activeGames});
+    });
 });
 app.get('/home', function (req,res){
     if(req.session.username == null)
         return res.redirect('/login');
-    res.render('home')
+    User.findOne({username:req.session.username}, function (err, user){
+        return res.render('home', { activeGames: user.activeGames});
+    });
 });
 // USER MANAGEMENT - U00
 // SIGNUP - S01
@@ -222,14 +230,6 @@ app.post('/games/new', function (req,res){
     var pl = [req.session.username];
     pl = pl.concat(req.body.game.users);
     var tUsers = [];
-    var us = function(callback){
-        __.each(pl, function(un){
-            User.findOne({username:un}, function(err, user){
-                tUsers.push(user);
-            });
-        });
-    }
-    us();
     var numPlayers = pl.length;
     var freeT = [];
     var mapName = req.body.game.map;
@@ -267,24 +267,33 @@ app.post('/games/new', function (req,res){
         return res.render("/games/23923423")
     }
     var genID = function(){
+        console.log('--users--');
+        console.log(tUsers);
+        console.log('----');
         var rand = Math.floor(Math.random()*1000000000);
         Game.count({id: rand}, function (err, count){
             if(count == 1){
                 genID();
             } else {
-                var g = new Game({id: rand, players: tUsers, freeTroops: freeT, regions: sRegions });
+                console.log("pl");
+                console.log(pl);
+                console.log("id")
+                console.log(rand);
+                var g = new Game({id: rand, players: pl, freeTroops: freeT, regions: sRegions });
                 g.save(function (err, gameSaved){
                     if(err){
                         console.log("game did not save");
                         console.log(err)
                         return res.render('error');
                     } else {
-                        __.each(tUsers, function(uz){
-                            uz.activeGames.push(g);
-                            uz.save();
+                        __.each(pl, function(uzn){
+                            User.findOne({username:uzn},function(err, unc){
+                                unc.activeGames.push(g);
+                                unc.save();
+                            });
                         });
-                        console.log(rand);
-                        console.log(sRegions);
+                        // console.log(rand);
+                        // console.log(sRegions);
                         console.log("game saved!");
                         return res.redirect('/games/'+rand);
                     }
@@ -292,16 +301,34 @@ app.post('/games/new', function (req,res){
             }
         });
     }
-    us(genID());
+    genID();
 });
 // PLAY GAME - G02
+app.get('/games',function (req, res){
+    if(req.session.username == null)
+        return res.redirect('/login');
+    return res.redirect('/home');
+});
 app.get('/games/:id',function (req, res){
     if(req.session.username == null)
         return res.redirect('/login');
+    if(req.params.id == "past"){
+        return res.redirect('/home');
+    }
     Game.findOne({id:req.params.id}, function (err, ga){ 
         if(err){ return res.render('error');}
         console.log(ga.regions);
-        return res.render('map', {game: ga });
+        console.log(ga);
+        var ind = 0;
+        for(var i = 0; i < ga.players.length; i++){
+            if(ga.players[i] == req.session.username){
+                ind = i;
+                break;
+            }
+        }
+        console.log(ind);
+        console.log(ga.players);
+        return res.render('map', {game: ga, pNum:ind });
     });
 
 });

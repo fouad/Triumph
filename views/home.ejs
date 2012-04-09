@@ -1,33 +1,80 @@
 <html class="no-js">
 <head>
-<title>Home</title>
-<link rel="stylesheet" type="text/css" href="stylesheets/base.css">
-<link rel="stylesheet" type="text/css" href="stylesheets/home.css">
-<link type="image/png" rel="SHORTCUT ICON" href="images/trophy.png">
+    <title>Home - TRIUMPH</title>
+    <link rel="stylesheet" type="text/css" href="/css/base.css">
+    <link type="image/png" rel="SHORTCUT ICON" href="/img/trophy.png">
 <link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Bitter:700' rel='stylesheet' type='text/css'>
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.0.6/modernizr.min.js"></script>
+<script type="text/javascript" src="/js/chosen.jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/css/chosen.css">
+<script type="text/javascript"> jQuery(document).ready(function(){
+  jQuery(".chosen").data("placeholder","Usernames").chosen();
+}); </script>
+<style type="text/css">
+    body{
+        padding-top: 60px;
+    }
+</style>
 <script type="text/javascript">
 $(window).load(function(){  
-      $('#wrapper').fadeIn(700); 
+      $('#container').fadeIn(700); 
 });
 </script>
 </head>
-<body class="load">
-<div id="wrapper">
-	<h1>TRIUMPH</h1>
-	<div id="home-play">
-		<div class="play-choice">
-			<a href="/games" class="button red">Games</a>
-			<a href="/games/new" class="button green">New Game</a>
-			<a href="/users/top" class="button golden">Leaderboard</a>
-			<a href="/games/past" class="button grey">History</a>
-		</div>
-		<div class="logout">
-			<a href="/logout" class="button grey">Logout</a>
-		</div>
-	</div>
-</div>
+<body>
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#">TRIUMPH</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li class="active"><a href="/">Home</a></li>
+              <li><a href="/about">About</a></li>
+              <li class="dropdown" id="menu1">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#menu1">
+                  Games
+                  <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="/games/new">New Game</a></li>
+                  <li><a href="/home/">Current</a></li>
+                  <li><a href="/games/past">History</a></li>
+                </ul>
+              </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li class="faux-link">Welcome back, <%= session.username %>!</li>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+          
+        </div>
+      </div>
+      <div id="nav-colors"></div>   
+    </div>
+    <div class="container">
+        <h1>Current Games</h1>
+            <br>
+            <% if( activeGames ) {%>
+            	<ul class="games">
+            	<% for(var i = 0; i < activeGames.length; i++){ %>
+	                <li><a href="/games/<%= activeGames[i].id %>"><%= activeGames[i].id %></a></li>
+                <% } %>
+                </ul>
+            <% } %>
+            
+    </div>
+    <script type="text/javascript" src="http://twitter.github.com/bootstrap/assets/js/bootstrap-dropdown.js"></script>
+    <script type="text/javascript">
+    $('.dropdown-toggle').dropdown()
+    </script>
+</body>
 </body>
 </html>

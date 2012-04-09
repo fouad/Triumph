@@ -711,3 +711,6 @@ a.brand{
 #login-form input[type=text], #login-form input[type=password]{
     height:25px;
 }
+.modal-footer.center{
+    text-align:center;
+}

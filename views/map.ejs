@@ -9,6 +9,7 @@
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.0.6/modernizr.min.js"></script>
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script type="text/javascript" src="https://raw.github.com/carhartl/jquery-cookie/master/jquery.cookie.js"></script>
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.3.1/underscore-min.js"></script>
 <script type="application/javascript" src="/js/notif.js"></script>
 <link rel="stylesheet" type="text/css" href="/css/notif.css">
@@ -17,6 +18,7 @@
 <script type="text/javascript" src="/js/jquery.svg.js"></script>
 <script type="text/javascript" src="/js/jquery.svgdom.pack.js"></script>
 <script type="text/javascript" src="/js/jquery.svganim.pack.js"></script>
+<script type="text/javascript" src="/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/js/game.js"></script>
 <link rel="stylesheet" type="text/css" href="/css/chosen.css">
 <script type="text/javascript">
@@ -46,6 +48,7 @@ $(window).load(function(){
         boroughs[i].attr({fill:'#bcbcbc', "stroke-width":2});
         boroughs[i].transform( 'S0.6,0.5,0,0');
         boroughs[i].node.id = "region"+i;
+        $("#"+boroughs[i].node.id).data("regionNum",i);
         // if(i != boroughs.length - 1){
             // boroughs[i].mouseover(function(){this.node.style.cursor='pointer'; this.animate({fill:'white'}, 3000, "linear")});
             // boroughs[i].mouseout(function(){this.animate({fill:'#bcbcbc'}, 300, "linear")});
@@ -65,13 +68,23 @@ $(window).load(function(){
     }
     console.log(sRegions);
     var rRegions = [<%- game.regions %>];
-    var game = new Game(<%= game.id %>, ["fm"], "<%= game.map %>", <%= game.turn %>, [<%- game.regions %>], sRegions);
+    window.game = new Game(<%= game.id %>, [<% for(var i=0; i<game.players.length; i++) {%>"<%= game.players[i] %>",<% } %>], "<%= game.map %>", <%= game.turn %>, [<%- game.regions %>], sRegions, <%= pNum %>);
     game.colorRegions();
+
 });
 
 </script>
 <script type="text/javascript"> jQuery(document).ready(function(){
   jQuery(".chosen").data("placeholder","Usernames").chosen();
+  $('#regionInfo').modal({
+    keyboard: true,
+    show: false
+});
+  $('#firstGame').modal({
+    keyboard: true,
+    show: false
+});
+  
 }); </script>
 <style type="text/css">
     body{
@@ -91,7 +104,7 @@ $(window).load(function(){
           <a class="brand" href="#">TRIUMPH</a>
           <div class="nav-collapse">
             <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
+              <li><a href="/">Home</a></li>
               <li><a href="/about">About</a></li>
               <li class="dropdown" id="menu1">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#menu1">
@@ -119,6 +132,32 @@ $(window).load(function(){
         <div id="wrapper">
             <div id="canvas_container" style="margin-left:auto;margin-right:auto;width:800px;height:600px;"></div>
         </div>
+    </div>
+    <div class="modal hide fade" id="regionInfo">
+      <div class="modal-header">
+        <a class="close" data-dismiss="modal">×</a>
+        <h3>Region Info</h3>
+      </div>
+      <div class="modal-body">
+        <p></p>
+        <p>Player: <span id="regionInfoPlayer">REPLACE</span></p>
+      </div>
+      <div class="modal-footer">
+        <a href="#" data-dismiss="modal" class="btn">Close</a>
+        <a href="#" class="btn btn-primary">Save changes</a>
+      </div>
+    </div>
+    <div class="modal hide fade" id="firstGame">
+      <div class="modal-header">
+        <a class="close" data-dismiss="modal">×</a>
+        <h3>First time</h3>
+      </div>
+      <div class="modal-body">
+        <p>One fine body…</p>
+      </div>
+      <div class="modal-footer center">
+        <a href="#" data-dismiss="modal" class="btn btn-success btn-large">Tour</a>
+      </div>
     </div>
     <script type="text/javascript" src="http://twitter.github.com/bootstrap/assets/js/bootstrap-dropdown.js"></script>
     <script type="text/javascript">
