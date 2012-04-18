@@ -73,22 +73,22 @@ app.configure(function(){
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
   app.use(express.bodyParser());
-  app.use(express.cookieParser());
+  app.use(express.cookieParser("secret"));
   app.use(express.methodOverride());
   app.use(express.session({ secret: "lsjdf3emo23j42m3romf2omoi3r0" }));
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
   app.set("view options", { layout : false } );
 });
-app.dynamicHelpers({
-request: function(req){
-return req;
-},
+// app.dynamicHelpers({
+// request: function(req){
+// return req;
+// },
 
-session: function(req, res){
-    return req.session;
-}
-});
+// session: function(req, res){
+//     return req.session;
+// }
+// });
 // Define Development-Specific Environment
 app.configure('development', function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
@@ -338,9 +338,9 @@ app.get('/nyan', function (req, res){
 app.get('/mu-0e36082c-12fbbfb6-41f76021-6ee9b732', function (req,res){
     return '42'
 });
-app.error(function (err, req, res){
-    res.render('error')
-});
+// app.error(function (err, req, res){
+//     res.render('error')
+// });
 // FUNCTIONS - F00
 
 app.listen(5000);
