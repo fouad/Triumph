@@ -75,7 +75,6 @@ $(window).load(function(){
 
 </script>
 <script type="text/javascript"> jQuery(document).ready(function(){
-  jQuery(".chosen").data("placeholder","Usernames").chosen();
   $('#regionInfo').modal({
     keyboard: true,
     show: false
@@ -141,6 +140,18 @@ $(window).load(function(){
       <div class="modal-body">
         <p></p>
         <p>Player: <span id="regionInfoPlayer">REPLACE</span></p>
+        <p>Troops: <select data-placeholder="Your Favorite Type of Bear" style="width:350px;" id="regionTroops" class="chosen" tabindex="7">
+          <option value=""></option>
+          <option>American Black Bear</option>
+          <option>Asiatic Black Bear</option>
+          <option>Brown Bear</option>
+          <option>Giant Panda</option>
+          <option selected>Sloth Bear</option>
+          <option disabled>Sun Bear</option>
+          <option>Polar Bear</option>
+          <option disabled>Spectacled Bear</option>
+        </select>
+        </p>
       </div>
       <div class="modal-footer">
         <a href="#" data-dismiss="modal" class="btn">Close</a>

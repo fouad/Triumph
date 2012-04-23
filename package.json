@@ -1,7 +1,7 @@
 {
   "name": "triumph",
   "description": "risk-esque mmo game",
-  "author": "Fouad Matin",
+  "author": "Fouad Matin <fm@fouadmat.in>",
   "subdomain": "triumph",
   "domains": [
     "triumph.fouadmat.in"

@@ -1,9 +1,14 @@
+
+/* 
+Triumph
+Realtime Risk-esque Multiplayer Game using Express, Redis, Mongo, jQuery
+Author: Fouad Matin (@heyfouad) - github: matin
+*/
+
 (function() {
-  var Game, GameSchema, Model, ObjectId, RedisStore, Schema, User, UserSchema, app, crypto, express, mongoose, notNames, redisConfig, routes, userNames, __;
+  var Game, GameSchema, Model, ObjectId, RedisStore, Schema, User, UserSchema, app, crypto, express, mongoose, notNames, redisConfig, userNames, __;
 
   express = require("express");
-
-  routes = require("./routes");
 
   mongoose = require("mongoose");
 
@@ -82,16 +87,7 @@
   Game = mongoose.model("Game", GameSchema);
 
   mongoose.connection.on("open", function() {
-    console.log("Mongoose connected");
-    User.count({}, function(err, count) {
-      return console.log("Records:", count);
-    });
-    return User.find({}, function(err, users) {
-      console.log("Users:", users);
-      return __.each(users, function(user) {
-        return userNames.push(user.username);
-      });
-    });
+    return console.log("Mongoose connected");
   });
 
   notNames = ["null"];
@@ -111,6 +107,11 @@
     return app.set("view options", {
       layout: false
     });
+  });
+
+  app.locals.use(function(req, res) {
+    res.locals.req = req;
+    return res.locals.session = req.session;
   });
 
   app.configure("development", function() {
@@ -415,5 +416,7 @@
   });
 
   app.listen(5000);
+
+  console.log('Server started at ' + new Date());
 
 }).call(this);

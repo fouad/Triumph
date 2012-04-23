@@ -1,5 +1,9 @@
+### 
+Triumph
+Realtime Risk-esque Multiplayer Game using Express, Redis, Mongo, jQuery
+Author: Fouad Matin (@heyfouad) - github: matin
+###
 express = require("express")
-routes = require("./routes")
 mongoose = require("mongoose")
 crypto = require("crypto")
 __ = require("underscore")
@@ -62,13 +66,6 @@ User = mongoose.model("User", UserSchema)
 Game = mongoose.model("Game", GameSchema)
 mongoose.connection.on "open", ->
   console.log "Mongoose connected"
-  User.count {}, (err, count) ->
-    console.log "Records:", count
-
-  User.find {}, (err, users) ->
-    console.log "Users:", users
-    __.each users, (user) ->
-      userNames.push user.username
 
 notNames = [ "null" ]
 app.configure ->
@@ -85,12 +82,10 @@ app.configure ->
   app.set "view options",
     layout: false
 
-#app.dynamicHelpers
-#  request: (req) ->
-#    req
+app.locals.use (req, res) ->
+  res.locals.req = req;
+  res.locals.session = req.session;
 
-#  session: (req, res) ->
-#    req.session
 
 app.configure "development", ->
   app.use express.errorHandler(
@@ -314,6 +309,11 @@ app.get "/games/:id", (req, res) ->
     ind = 0
     i = 0
 
+    User.findOne 
+      username: req.session.username
+    , (err, uf) ->
+      console.log uf
+
     while i < ga.players.length
       if ga.players[i] is req.session.username
         ind = i
@@ -331,12 +331,11 @@ app.get "/nyan", (req, res) ->
 app.get "/mu-0e36082c-12fbbfb6-41f76021-6ee9b732", (req, res) ->
   "42"
 
-
 app.use (error, req, res, next) ->
     if (typeof error == typeof PageNotFoundError) 
       res.render 'error'
-    
     else 
         res.render 'error'
 
 app.listen 5000
+console.log 'Server started at ' + new Date()
