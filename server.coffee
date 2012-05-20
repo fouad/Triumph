@@ -10,14 +10,14 @@ __ = require("underscore")
 RedisStore = require('connect-redis')(express)
 
 redisConfig = 
-  host: 'lab.redistogo.com'
-  port: 9178
-  pass: 'a0b72f75e8a375619350204056c54ff0'
-  db: 'nodejitsu'
+  host: 'sub.redistogo.com'
+  port: 1111
+  pass: 'pass'
+  db: 'login'
 
 app = module.exports = express.createServer()
 userNames = []
-mongoose.connect "mongodb://nodejitsu:7d632d485ddb4fbfd696ade7a568d726@flame.mongohq.com:27023/nodejitsudb661488872412"
+mongoose.connect "mongodb://login:pass@sub.mongohq.com:port/db"
 Schema = mongoose.Schema
 ObjectId = Schema.ObjectId
 Model = mongoose.Model
