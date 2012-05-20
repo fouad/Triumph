@@ -27,6 +27,7 @@ Game.prototype.colorRegions = function(){
         .click(function(){
             console.log(self.players[region.player]);
             $('#regionInfoPlayer').text(self.players[$(this).data("player")]);
+            
             $('#regionInfo').modal('show');
         })
         .mouseenter(function(){ 

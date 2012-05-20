@@ -19,9 +19,9 @@ Author: Fouad Matin (@heyfouad) - github: matin
   RedisStore = require('connect-redis')(express);
 
   redisConfig = {
-    host: 'drum.redistogo.com',
-    port: 9435,
-    pass: 'e8575f08d80b885343429638e603c061',
+    host: 'lab.redistogo.com',
+    port: 9178,
+    pass: 'a0b72f75e8a375619350204056c54ff0',
     db: 'nodejitsu'
   };
 
@@ -29,7 +29,7 @@ Author: Fouad Matin (@heyfouad) - github: matin
 
   userNames = [];
 
-  mongoose.connect("mongodb://nodejitsu:b98d23868c52a099003c1546fa4bee90@staff.mongohq.com:10021/nodejitsudb94950299470");
+  mongoose.connect("mongodb://nodejitsu:7d632d485ddb4fbfd696ade7a568d726@flame.mongohq.com:27023/nodejitsudb661488872412");
 
   Schema = mongoose.Schema;
 
@@ -383,6 +383,11 @@ Author: Fouad Matin (@heyfouad) - github: matin
       console.log(ga);
       ind = 0;
       i = 0;
+      User.findOne({
+        username: req.session.username
+      }, function(err, uf) {
+        return console.log(uf);
+      });
       while (i < ga.players.length) {
         if (ga.players[i] === req.session.username) {
           ind = i;
