@@ -1,3 +1,21 @@
+<<<<<<< HEAD
 node_modules
 *.pyc
 *.zip
+=======
+lib-cov
+*.seed
+*.log
+*.csv
+*.dat
+*.out
+*.pid
+*.gz
+
+pids
+logs
+results
+
+node_modules
+npm-debug.log
+>>>>>>> c78d942c47dc5d71018d40d48c56af270038e20c
