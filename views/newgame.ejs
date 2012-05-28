@@ -70,7 +70,6 @@ $(window).load(function(){
                 </div>
             <% } %>
             <label for"game[users]"><h4>Who are you playing with? (maximum of 3 other people)</h3></label>
-            <!-- <input type="text" name="game[users]" placeholder="Usernames"/> -->
             <select class="chosen" multiple="true" style="width:400px;" name="game[users]">
                 <% for(var i=0; i<users.length; i++) {%>
                    <option value="<%= users[i] %>"><%= users[i] %></option>

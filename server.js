@@ -90,6 +90,14 @@ Author: Fouad Matin (@heyfouad) - github: matin
     return console.log("Mongoose connected");
   });
 
+  User.find().run(function(err, users) {
+    console.log(users);
+    return __.map(users, function(eu) {
+      console.log(eu.username);
+      return userNames.push(eu.username);
+    });
+  });
+
   notNames = ["null"];
 
   app.configure(function() {
@@ -243,6 +251,7 @@ Author: Fouad Matin (@heyfouad) - github: matin
     var su;
     if (req.session.username == null) return res.redirect("/login");
     su = req.session.username;
+    console.log(userNames);
     return res.render("newgame", {
       error: false,
       users: __.reject(userNames, function(ur) {

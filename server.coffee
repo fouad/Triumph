@@ -10,14 +10,14 @@ __ = require("underscore")
 RedisStore = require('connect-redis')(express)
 
 redisConfig = 
-  host: 'sub.redistogo.com'
-  port: 1111
-  pass: 'pass'
-  db: 'login'
+  host: 'lab.redistogo.com'
+  port: 9178
+  pass: 'a0b72f75e8a375619350204056c54ff0'
+  db: 'nodejitsu'
 
 app = module.exports = express.createServer()
 userNames = []
-mongoose.connect "mongodb://login:pass@sub.mongohq.com:port/db"
+mongoose.connect "mongodb://nodejitsu:7d632d485ddb4fbfd696ade7a568d726@flame.mongohq.com:27023/nodejitsudb661488872412"
 Schema = mongoose.Schema
 ObjectId = Schema.ObjectId
 Model = mongoose.Model
@@ -66,6 +66,12 @@ User = mongoose.model("User", UserSchema)
 Game = mongoose.model("Game", GameSchema)
 mongoose.connection.on "open", ->
   console.log "Mongoose connected"
+
+User.find().run (err, users) ->
+  console.log users
+  __.map users, (eu) ->
+    console.log eu.username
+    userNames.push eu.username
 
 notNames = [ "null" ]
 app.configure ->
@@ -187,6 +193,7 @@ app.get "/games", (req, res) ->
 app.get "/games/new", (req, res) ->
   return res.redirect("/login")  unless req.session.username?
   su = req.session.username
+  console.log userNames
   res.render "newgame",
     error: false
     users: __.reject(userNames, (ur) ->
