@@ -46,51 +46,15 @@ Game.prototype.getRegionColor = function(player, numTroops){
     if(player == 0){
         var c = Color("#156165");
         return c.lighten((numTroops)/20).hexString();
-        // if(numTroops < 10){
-        //     return '#156165';
-        // } else if (numTroops < 25) {
-        //     return '#1D858B';
-        // } else if (numTroops < 40) {
-        //     return '#25AAB2';
-        // } else {
-        //     return '#32E7F1';
-        // }
     } else if (player == 1){
         var c = Color("#470B49");
         return c.lighten((numTroops)/20).hexString();
-        // if(numTroops < 10){
-        //     return '#470B49';
-        // } else if (numTroops < 25) {
-        //     return '#600F63';
-        // } else if (numTroops < 40) {
-        //     return '#6D1170';
-        // } else {
-        //     return '#AA1BAF';
-        // }
     } else if (player == 2){
         var c = Color("#7F0000");
         return c.lighten((numTroops)/20).hexString();
-        // if(numTroops < 10){
-        //     return '#7F0000';
-        // } else if (numTroops < 25) {
-        //     return '#BF0000';
-        // } else if (numTroops < 40) {
-        //     return '#E50000';
-        // } else {
-        //     return '#FF0000';
-        // }
     } else if (player == 3){
         var c = Color("#000B7F");
         return c.lighten((numTroops)/20).hexString();
-        // if(numTroops < 10){
-        //     return '#000B7F';
-        // } else if (numTroops < 25) {
-        //     return '#0011BF';
-        // } else if (numTroops < 40) {
-        //     return '#0014E5';
-        // } else {
-        //     return '#0017FF';
-        // }
     } else {
         return '#000';
     }
