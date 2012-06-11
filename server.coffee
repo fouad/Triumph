@@ -8,6 +8,7 @@ mongoose = require("mongoose")
 crypto = require("crypto")
 __ = require("underscore")
 RedisStore = require('connect-redis')(express)
+app = module.exports = express.createServer()
 
 redisConfig = 
   host: 'lab.redistogo.com'
@@ -15,7 +16,6 @@ redisConfig =
   pass: 'a0b72f75e8a375619350204056c54ff0'
   db: 'nodejitsu'
 
-app = module.exports = express.createServer()
 userNames = []
 mongoose.connect "mongodb://nodejitsu:7d632d485ddb4fbfd696ade7a568d726@flame.mongohq.com:27023/nodejitsudb661488872412"
 Schema = mongoose.Schema
@@ -61,6 +61,7 @@ GameSchema = new Schema(
   gameStarted:
     type: Number
     default: 0
+    
 )
 User = mongoose.model("User", UserSchema)
 Game = mongoose.model("Game", GameSchema)
@@ -311,8 +312,8 @@ app.get "/games/:id", (req, res) ->
     id: req.params.id
   , (err, ga) ->
     return res.render("error")  if err
-    console.log ga.regions
     console.log ga
+    return res.render("error") if ga == null
     ind = 0
     i = 0
 
@@ -334,10 +335,45 @@ app.get "/games/:id", (req, res) ->
 
 app.get "/nyan", (req, res) ->
   res.render "error"
+  
+app.get "/about", (req, res) ->
+  res.render "about"
 
 app.get "/mu-0e36082c-12fbbfb6-41f76021-6ee9b732", (req, res) ->
   "42"
 
+app.get "/game/move", (req, res) ->
+  console.log('move')
+  console.log req.query["regions"]
+  Game.findOne
+    id: req.query['gameid']
+    , (err, game) ->
+      if err
+        return -1
+      if game == null
+        return -1
+      game.regions = JSON.toJSON(req.query["regions"])
+      console.log("ooo regions ooo")
+      console.log(game.regions)
+      console.log("+++ regions +++")
+      game.turns = game.turns++;
+      if game.gameStarted == game.players.length
+        game.save();
+      game.save();
+
+# io.sockets.on 'connection', (socket) ->
+#   socket.on 'gameid', (gameid) ->
+#     Game.findOne
+#       id: req.params.id
+#     , (err, game) ->
+#       if err
+#         return io.emit 'gameok', -1
+#       if game == null
+#         return io.emit 'gameok', -1 
+#       console.log 'gameid accepted'
+#       socket.on 'attack', (player1, player2, regionindex, troopsSent) ->
+#         return 'hi'
+      
 app.use (error, req, res, next) ->
     if (typeof error == typeof PageNotFoundError) 
       res.render 'error'

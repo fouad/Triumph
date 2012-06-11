@@ -18,14 +18,14 @@ Author: Fouad Matin (@heyfouad) - github: matin
 
   RedisStore = require('connect-redis')(express);
 
+  app = module.exports = express.createServer();
+
   redisConfig = {
     host: 'lab.redistogo.com',
     port: 9178,
     pass: 'a0b72f75e8a375619350204056c54ff0',
     db: 'nodejitsu'
   };
-
-  app = module.exports = express.createServer();
 
   userNames = [];
 
@@ -388,8 +388,8 @@ Author: Fouad Matin (@heyfouad) - github: matin
     }, function(err, ga) {
       var i, ind;
       if (err) return res.render("error");
-      console.log(ga.regions);
       console.log(ga);
+      if (ga === null) return res.render("error");
       ind = 0;
       i = 0;
       User.findOne({
@@ -417,8 +417,30 @@ Author: Fouad Matin (@heyfouad) - github: matin
     return res.render("error");
   });
 
+  app.get("/about", function(req, res) {
+    return res.render("about");
+  });
+
   app.get("/mu-0e36082c-12fbbfb6-41f76021-6ee9b732", function(req, res) {
     return "42";
+  });
+
+  app.get("/game/move", function(req, res) {
+    console.log('move');
+    console.log(req.query["regions"]);
+    return Game.findOne({
+      id: req.query['gameid']
+    }, function(err, game) {
+      if (err) return -1;
+      if (game === null) return -1;
+      game.regions = JSON.toJSON(req.query["regions"]);
+      console.log("ooo regions ooo");
+      console.log(game.regions);
+      console.log("+++ regions +++");
+      game.turns = game.turns++;
+      if (game.gameStarted === game.players.length) game.save();
+      return game.save();
+    });
   });
 
   app.use(function(error, req, res, next) {
