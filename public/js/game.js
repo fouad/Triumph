@@ -2,6 +2,7 @@ function Game(gid, players, map, turn, regions, pRegions, playerNum, freeTroops,
     var self = this;
 		// id of the game
     this.gid = gid;
+    console.log('gameid ' + this.gid)
 		// array of the players in the game
     this.players = players;
 		// map name
@@ -16,8 +17,10 @@ function Game(gid, players, map, turn, regions, pRegions, playerNum, freeTroops,
 		// number of free troops
 		this.freeTroops = freeTroops;
 		
+		this.ajax = false;
+		
 		this.canAttack = false;
-		if (gameStarted == players.length) {
+		if (gameStarted == 1) {
 		  this.canAttack = true;
 		}
     console.log(this.pRegions);
@@ -118,6 +121,7 @@ Game.prototype.attachClickListener = function() {
   				.removeClass('btn-danger')
   				.removeClass('attack')
   				.addClass('save-troops')
+  				.unbind('click.attack')
   				.click(function(e){
   				  console.log("regionhidden: "+$("#regionhidden").val());
   				  if (self.regions[$("#regionhidden").val()].troops < $('.regionTroops').val()){
@@ -146,7 +150,8 @@ Game.prototype.attachClickListener = function() {
             $("#troopsBlank").text(region.troops);
             $(".save-troops").text("Attack")
             .addClass('btn-danger attack') 
-            .click(function(e){
+            .unbind('click.move')
+            .bind("click.attack",function(e){
               $.get('/game/attack', {  })
             });
             if (!self.canAttack) {
@@ -200,11 +205,15 @@ Game.prototype.initHUD = function(){
     $(".turn").text('It\'s your turn.');
     $(".pushMoves").show();
     $(".pushMoves").click(function(e){
-      console.log(game.regions)
+      $('.pushMoves').addClass('disabled');
       var regionJSON = JSON.stringify(game.regions);
-      console.log(regionJSON);
+      console.log(regionJSON)
       console.log(JSON.parse(regionJSON))
-      $.get('/game/move', { gameid: self.gid, regions: regionJSON }, console.log('x'));//window.location.reload() );
+      console.log('time to make a move')
+      if (!(game.ajax)) {
+        game.ajax = true;
+        $.post('/game/move', { gameid: game.gid, regions: regionJSON }, console.log(game.gid));//window.location.reload() );
+      }
     });
   }
 }

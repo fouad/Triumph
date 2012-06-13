@@ -425,21 +425,33 @@ Author: Fouad Matin (@heyfouad) - github: matin
     return "42";
   });
 
-  app.get("/game/move", function(req, res) {
+  app.post("/game/move", function(req, res) {
     console.log('move');
-    console.log(req.query["regions"]);
+    console.log(req.params);
+    console.log(req.body.gameid);
+    console.log('whatevs' + req.body.gameid);
+    Game.find({
+      id: req.body.gameid
+    }, function(err, g) {
+      console.log('game ++->');
+      return console.log(g);
+    });
     return Game.findOne({
-      id: req.query['gameid']
+      id: req.body.gameid
     }, function(err, game) {
       if (err) return -1;
       if (game === null) return -1;
-      game.regions = JSON.toJSON(req.query["regions"]);
+      game.regions = JSON.parse(req.body.regions);
       console.log("ooo regions ooo");
-      console.log(game.regions);
+      console.dir(req.body.regions);
       console.log("+++ regions +++");
-      game.turns = game.turns++;
-      if (game.gameStarted === game.players.length) game.save();
-      return game.save();
+      game.turns = game.turn++;
+      console.log(game.turn);
+      if (game.turns === game.players.length) game.gameStarted = 1;
+      console.log("--- game #" + req.body.gameid + " ---");
+      game.save();
+      console.dir(game);
+      return console.dir(game.regions[0]);
     });
   });
 
